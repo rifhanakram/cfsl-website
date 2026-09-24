@@ -74,6 +74,8 @@ export interface Config {
     news: News;
     events: Event;
     registrations: Registration;
+    documents: Document;
+    downloads: Download;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -88,6 +90,8 @@ export interface Config {
     news: NewsSelect<false> | NewsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    downloads: DownloadsSelect<false> | DownloadsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -412,6 +416,56 @@ export interface Registration {
   createdAt: string;
 }
 /**
+ * The public governance library: constitution, policies, circulars, reports and plans.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  title: string;
+  category: 'constitution' | 'regulations-policies' | 'circulars' | 'annual-reports' | 'strategic-plans';
+  /**
+   * The date on the document, used for sorting and the year filter.
+   */
+  documentDate: string;
+  description?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Registration forms and other downloads: a PDF upload or a link to an online form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "downloads".
+ */
+export interface Download {
+  id: number;
+  title: string;
+  category: 'club' | 'player' | 'coach-arbiter' | 'other';
+  description?: string | null;
+  kind: 'file' | 'link';
+  file?: (number | null) | File;
+  url?: string | null;
+  /**
+   * Lower numbers are listed first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -462,6 +516,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'registrations';
         value: number | Registration;
+      } | null)
+    | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
+        relationTo: 'downloads';
+        value: number | Download;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -676,6 +738,44 @@ export interface RegistrationsSelect<T extends boolean = true> {
   paid?: T;
   paidAt?: T;
   paidBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  documentDate?: T;
+  description?: T;
+  prefix?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "downloads_select".
+ */
+export interface DownloadsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  description?: T;
+  kind?: T;
+  file?: T;
+  url?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }

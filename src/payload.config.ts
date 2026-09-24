@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
+import { Documents } from './collections/Documents'
+import { Downloads } from './collections/Downloads'
 import { Events } from './collections/Events'
 import { Files } from './collections/Files'
 import { Media } from './collections/Media'
@@ -28,7 +30,7 @@ export default buildConfig({
       titleSuffix: ' — CFSL Admin',
     },
   },
-  collections: [Users, Media, Files, Pages, News, Events, Registrations],
+  collections: [Users, Media, Files, Pages, News, Events, Registrations, Documents, Downloads],
   globals: [Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -52,6 +54,7 @@ export default buildConfig({
       collections: {
         media: { disablePayloadAccessControl: true },
         files: { disablePayloadAccessControl: true },
+        documents: { disablePayloadAccessControl: true },
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true,
