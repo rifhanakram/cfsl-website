@@ -48,3 +48,10 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+.env*
+!.env.example
+
+# agent skills installed by marketplace integrations
+.agents/
+.claude/
+skills-lock.json

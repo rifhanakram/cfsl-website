@@ -39,6 +39,8 @@ export default buildConfig({
   plugins: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      // Keeps the schema identical whether or not a Blob token is present.
+      alwaysInsertFields: true,
       collections: {
         media: true,
       },
