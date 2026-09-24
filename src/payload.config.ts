@@ -16,6 +16,7 @@ import { News } from './collections/News'
 import { Pages } from './collections/Pages'
 import { People } from './collections/People'
 import { Registrations } from './collections/Registrations'
+import { Homepage } from './globals/Homepage'
 import { Navigation } from './globals/Navigation'
 
 const filename = fileURLToPath(import.meta.url)
@@ -32,7 +33,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Files, Pages, News, Events, Registrations, Documents, Downloads, People],
-  globals: [Navigation],
+  globals: [Homepage, Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

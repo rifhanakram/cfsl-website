@@ -5,6 +5,7 @@ import * as migration_20260924_040336_news from './20260924_040336_news';
 import * as migration_20260924_041538_events_registrations from './20260924_041538_events_registrations';
 import * as migration_20260924_041935_documents_downloads from './20260924_041935_documents_downloads';
 import * as migration_20260924_042140_people from './20260924_042140_people';
+import * as migration_20260924_042322_homepage from './20260924_042322_homepage';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260924_042140_people.up,
     down: migration_20260924_042140_people.down,
-    name: '20260924_042140_people'
+    name: '20260924_042140_people',
+  },
+  {
+    up: migration_20260924_042322_homepage.up,
+    down: migration_20260924_042322_homepage.down,
+    name: '20260924_042322_homepage'
   },
 ];

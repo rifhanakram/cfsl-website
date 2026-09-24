@@ -104,9 +104,11 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    homepage: Homepage;
     navigation: Navigation;
   };
   globalsSelect: {
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
   };
   locale: null;
@@ -867,6 +869,26 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Everything else on the homepage fills in automatically from the newest news and events.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: number;
+  tagline?: string | null;
+  /**
+   * Shown at the top. If empty, the latest official announcements are shown.
+   */
+  pinnedAnnouncements?: (number | News)[] | null;
+  /**
+   * Listed first under upcoming events.
+   */
+  featuredEvents?: (number | Event)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Main menu. Leave empty to use the default launch menu (Home, News, Tournaments, Rankings, Resources, About CFSL).
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -886,6 +908,18 @@ export interface Navigation {
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  tagline?: T;
+  pinnedAnnouncements?: T;
+  featuredEvents?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
