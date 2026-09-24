@@ -69,8 +69,11 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    files: File;
     pages: Page;
     news: News;
+    events: Event;
+    registrations: Registration;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,8 +83,11 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
+    registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -176,6 +182,29 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * PDFs and other downloadable files, e.g. tournament prospectuses and forms.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: number;
+  title: string;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * Standalone pages such as /players. A page with the slug "about" or "resources" adds an introduction to that section.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -254,6 +283,136 @@ export interface News {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  /**
+   * Used in the page URL. Generated from the title if left empty.
+   */
+  slug: string;
+  type: 'tournament' | 'school' | 'deadline' | 'national-team' | 'seminar';
+  startDate: string;
+  /**
+   * Leave empty for a one-day event.
+   */
+  endDate?: string | null;
+  venue?: string | null;
+  /**
+   * One or two sentences shown in the calendar.
+   */
+  summary?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  eligibility?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  prospectus?: (number | null) | File;
+  /**
+   * The tournament page on chess-results.com, shown embedded on the event page.
+   */
+  chessResultsUrl?: string | null;
+  registration: {
+    enabled?: boolean | null;
+    opensAt?: string | null;
+    closesAt?: string | null;
+    /**
+     * e.g. LKR 2,500
+     */
+    fee?: string | null;
+    paymentInstructions?: string | null;
+    /**
+     * "Under N" means younger than N on this date.
+     */
+    ageReferenceDate: 'jan-1' | 'dec-31';
+    sections?:
+      | {
+          name: string;
+          /**
+           * Leave empty for no age limit.
+           */
+          maxAge?: number | null;
+          minRating?: number | null;
+          maxRating?: number | null;
+          capacity: number;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Last name and other names are always required. FIDE ID is always shown and optional. Guardian details are required for players under 18 on the start date.
+     */
+    fields?: {
+      dateOfBirth: 'required' | 'optional' | 'hidden';
+      sex: 'required' | 'optional' | 'hidden';
+      email: 'required' | 'optional' | 'hidden';
+      phone: 'required' | 'optional' | 'hidden';
+      schoolOrClub: 'required' | 'optional' | 'hidden';
+      coach: 'required' | 'optional' | 'hidden';
+      rating: 'required' | 'optional' | 'hidden';
+    };
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Tournament entries submitted through the website. To mark several entries as paid, select them and use Edit.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrations".
+ */
+export interface Registration {
+  id: number;
+  displayName?: string | null;
+  event: number | Event;
+  sectionName: string;
+  sectionId: string;
+  lastName: string;
+  otherNames: string;
+  fideId?: string | null;
+  rating?: number | null;
+  dateOfBirth?: string | null;
+  sex?: ('m' | 'w') | null;
+  email?: string | null;
+  phone?: string | null;
+  schoolOrClub?: string | null;
+  coach?: string | null;
+  guardianName?: string | null;
+  guardianContact?: string | null;
+  paid?: boolean | null;
+  paidAt?: string | null;
+  paidBy?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -285,12 +444,24 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'files';
+        value: number | File;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
     | ({
         relationTo: 'news';
         value: number | News;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'registrations';
+        value: number | Registration;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -382,6 +553,26 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files_select".
+ */
+export interface FilesSelect<T extends boolean = true> {
+  title?: T;
+  prefix?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
@@ -409,6 +600,84 @@ export interface NewsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  type?: T;
+  startDate?: T;
+  endDate?: T;
+  venue?: T;
+  summary?: T;
+  description?: T;
+  eligibility?: T;
+  prospectus?: T;
+  chessResultsUrl?: T;
+  registration?:
+    | T
+    | {
+        enabled?: T;
+        opensAt?: T;
+        closesAt?: T;
+        fee?: T;
+        paymentInstructions?: T;
+        ageReferenceDate?: T;
+        sections?:
+          | T
+          | {
+              name?: T;
+              maxAge?: T;
+              minRating?: T;
+              maxRating?: T;
+              capacity?: T;
+              id?: T;
+            };
+        fields?:
+          | T
+          | {
+              dateOfBirth?: T;
+              sex?: T;
+              email?: T;
+              phone?: T;
+              schoolOrClub?: T;
+              coach?: T;
+              rating?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrations_select".
+ */
+export interface RegistrationsSelect<T extends boolean = true> {
+  displayName?: T;
+  event?: T;
+  sectionName?: T;
+  sectionId?: T;
+  lastName?: T;
+  otherNames?: T;
+  fideId?: T;
+  rating?: T;
+  dateOfBirth?: T;
+  sex?: T;
+  email?: T;
+  phone?: T;
+  schoolOrClub?: T;
+  coach?: T;
+  guardianName?: T;
+  guardianContact?: T;
+  paid?: T;
+  paidAt?: T;
+  paidBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

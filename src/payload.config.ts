@@ -7,9 +7,12 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
+import { Events } from './collections/Events'
+import { Files } from './collections/Files'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { Pages } from './collections/Pages'
+import { Registrations } from './collections/Registrations'
 import { Navigation } from './globals/Navigation'
 
 const filename = fileURLToPath(import.meta.url)
@@ -25,7 +28,7 @@ export default buildConfig({
       titleSuffix: ' — CFSL Admin',
     },
   },
-  collections: [Users, Media, Pages, News],
+  collections: [Users, Media, Files, Pages, News, Events, Registrations],
   globals: [Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -48,6 +51,7 @@ export default buildConfig({
       // Every upload is public, so files are served straight from the Blob CDN.
       collections: {
         media: { disablePayloadAccessControl: true },
+        files: { disablePayloadAccessControl: true },
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true,
