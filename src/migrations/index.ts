@@ -1,5 +1,6 @@
 import * as migration_20260923_183536_initial from './20260923_183536_initial';
 import * as migration_20260924_035153_blob_object_key from './20260924_035153_blob_object_key';
+import * as migration_20260924_040018_pages_navigation from './20260924_040018_pages_navigation';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20260924_035153_blob_object_key.up,
     down: migration_20260924_035153_blob_object_key.down,
-    name: '20260924_035153_blob_object_key'
+    name: '20260924_035153_blob_object_key',
+  },
+  {
+    up: migration_20260924_040018_pages_navigation.up,
+    down: migration_20260924_040018_pages_navigation.down,
+    name: '20260924_040018_pages_navigation'
   },
 ];

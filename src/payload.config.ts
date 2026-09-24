@@ -8,6 +8,8 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { Navigation } from './globals/Navigation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +24,8 @@ export default buildConfig({
       titleSuffix: ' — CFSL Admin',
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Pages],
+  globals: [Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

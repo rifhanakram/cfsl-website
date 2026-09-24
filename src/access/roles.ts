@@ -15,3 +15,10 @@ export const isAdminOrSelf: Access = ({ req }) => {
   if (!req.user) return false
   return { id: { equals: req.user.id } }
 }
+
+export const isEditorOrAdmin: Access = ({ req }) => hasRole(req, 'admin') || hasRole(req, 'editor')
+
+export const publishedOrStaff: Access = ({ req }) => {
+  if (req.user) return true
+  return { _status: { equals: 'published' } }
+}

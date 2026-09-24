@@ -1,4 +1,4 @@
-// Any setup scripts you might need go here
+import { loadEnvConfig } from '@next/env'
 
-// Load .env files
-import 'dotenv/config'
+// .env holds production values; .env.local (local database) takes precedence.
+loadEnvConfig(process.cwd())
