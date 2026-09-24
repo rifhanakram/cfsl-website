@@ -76,6 +76,7 @@ export interface Config {
     registrations: Registration;
     documents: Document;
     downloads: Download;
+    people: Person;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +93,7 @@ export interface Config {
     registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
     downloads: DownloadsSelect<false> | DownloadsSelect<true>;
+    people: PeopleSelect<false> | PeopleSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -466,6 +468,31 @@ export interface Download {
   createdAt: string;
 }
 /**
+ * Executive Committee and Commission members shown on the About page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people".
+ */
+export interface Person {
+  id: number;
+  name: string;
+  role: string;
+  body: 'executive-committee' | 'commission';
+  commission?: string | null;
+  photo?: (number | null) | Media;
+  termStart?: string | null;
+  /**
+   * Members are hidden once their term has ended.
+   */
+  termEnd?: string | null;
+  /**
+   * Lower numbers are listed first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -524,6 +551,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'downloads';
         value: number | Download;
+      } | null)
+    | ({
+        relationTo: 'people';
+        value: number | Person;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -775,6 +806,22 @@ export interface DownloadsSelect<T extends boolean = true> {
   kind?: T;
   file?: T;
   url?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people_select".
+ */
+export interface PeopleSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  body?: T;
+  commission?: T;
+  photo?: T;
+  termStart?: T;
+  termEnd?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;

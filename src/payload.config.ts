@@ -14,6 +14,7 @@ import { Files } from './collections/Files'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { Pages } from './collections/Pages'
+import { People } from './collections/People'
 import { Registrations } from './collections/Registrations'
 import { Navigation } from './globals/Navigation'
 
@@ -30,7 +31,7 @@ export default buildConfig({
       titleSuffix: ' — CFSL Admin',
     },
   },
-  collections: [Users, Media, Files, Pages, News, Events, Registrations, Documents, Downloads],
+  collections: [Users, Media, Files, Pages, News, Events, Registrations, Documents, Downloads, People],
   globals: [Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
