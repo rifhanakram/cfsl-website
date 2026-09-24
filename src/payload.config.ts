@@ -8,6 +8,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { News } from './collections/News'
 import { Pages } from './collections/Pages'
 import { Navigation } from './globals/Navigation'
 
@@ -24,7 +25,7 @@ export default buildConfig({
       titleSuffix: ' — CFSL Admin',
     },
   },
-  collections: [Users, Media, Pages],
+  collections: [Users, Media, Pages, News],
   globals: [Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -44,8 +45,9 @@ export default buildConfig({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       // Keeps the schema identical whether or not a Blob token is present.
       alwaysInsertFields: true,
+      // Every upload is public, so files are served straight from the Blob CDN.
       collections: {
-        media: true,
+        media: { disablePayloadAccessControl: true },
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true,
