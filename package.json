@@ -17,6 +17,7 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "seed:admins": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/seed-admins.ts",
+    "seed:education": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/seed-education.ts",
     "typecheck": "tsc --noEmit",
     "test:unit": "vitest run --config ./vitest.config.mts tests/unit"
   },

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 
 import { ComingSoon } from '@/components/site/coming-soon'
 import { PageHeader } from '@/components/site/page-header'
@@ -15,9 +15,12 @@ export function generateStaticParams() {
 
 async function resolve(slug: string) {
   const page = await getPage(slug)
+  // Topic pages live under their section, e.g. /school-chess → /education/school-chess.
+  if (page?.section) return { kind: 'redirect' as const, href: `/${page.section}/${page.slug}` }
   const placeholder = PLACEHOLDER_SECTIONS[slug]
   if (!page && !placeholder) return null
   return {
+    kind: 'page' as const,
     title: page?.title ?? placeholder,
     body: page?.body,
     comingSoon: page ? Boolean(page.comingSoon) : true,
@@ -26,12 +29,13 @@ async function resolve(slug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = await resolve((await params).slug)
-  return page ? { title: page.title } : {}
+  return page?.kind === 'page' ? { title: page.title } : {}
 }
 
 export default async function Page({ params }: Props) {
   const page = await resolve((await params).slug)
   if (!page) notFound()
+  if (page.kind === 'redirect') permanentRedirect(page.href)
 
   return (
     <>
