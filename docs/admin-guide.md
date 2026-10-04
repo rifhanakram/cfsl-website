@@ -1,13 +1,13 @@
-# CFSL Website — Launch Features & Admin Guide
+# CFSL Website — Features & Admin Guide
 
 **Site:** https://cfsl-website.vercel.app
 **Admin panel:** https://cfsl-website.vercel.app/admin
 
-This guide covers what is on the website at launch and how the CFSL team keeps it up to date. No developer is needed for any task in this guide.
+This guide covers what is on the website (the launch features plus Clubs, Education, Galleries, Stories, Press releases and the Brand hub) and how the CFSL team keeps it up to date. No developer is needed for any task in this guide.
 
 ---
 
-## Part 1 — What's available at launch
+## Part 1 — What's on the website
 
 ### Public website
 
@@ -16,13 +16,19 @@ This guide covers what is on the website at launch and how the CFSL team keeps i
 | **Home** | `/` | Official announcements, events with open registration, upcoming events, latest results, latest news, and quick links to rankings, documents and forms. |
 | **News** | `/news` | All news and announcements, newest first, filterable by category. Each article has a share bar (Facebook, WhatsApp, X, and the phone's own share menu). |
 | **Tournaments** | `/events` | The calendar, *"What's happening in Sri Lankan chess"*: tournaments, school chess, deadlines, national team events and seminars. Filter by type, and switch between **Upcoming** and **Past events**. |
-| **Event page** | `/events/<name>` | Dates, venue, description, eligibility, prospectus download, the registration form, the public entry list, and results from chess-results.com. |
+| **Event page** | `/events/<name>` | Dates, venue, description, eligibility, prospectus download, the registration form, the public entry list, results from chess-results.com, and any photo or video albums linked to the event. |
 | **Rankings** | `/rankings` | Opens the current month's FIDE rating list for Sri Lanka. The link updates itself each month. |
 | **Resources** | `/resources` | Links to the document library, the forms centre and rankings. |
 | **Governance documents** | `/resources/documents` | Searchable library of the Constitution, Regulations & Policies, Official Circulars, Annual Reports and Strategic Plans. Filter by category and year. |
 | **Forms & downloads** | `/resources/downloads` | Forms for clubs, players, coaches and arbiters, as PDFs or links to online forms (Google Forms, Tally). |
+| **Clubs** | `/clubs` | Directory of chess clubs. Search by name or city, and filter by district and CFSL registration. Each club has a profile page at `/clubs/<name>` with its venue, links and key contacts. |
+| **Education** | `/education` | Topic pages such as School Chess, Coaching and Arbiters, each at `/education/<topic>`. |
+| **Media** | `/media` | Links to galleries, stories, press releases and the brand hub, plus the latest stories and press releases. |
+| **Galleries** | `/media/galleries` | Photo and video albums. Photos open full screen and you can step through them. |
+| **Stories** and **Press releases** | `/media/stories`, `/media/press` | News items in the Stories and Press releases categories. They also appear in the main News feed. |
+| **Brand hub** | `/media/brand` | CFSL logos, brand guidelines and other media resources to download. |
 | **About CFSL** | `/about` | Executive Committee and Commission members. |
-| **Coming soon** | `/players`, `/clubs`, `/education`, `/national-teams`, `/media` | Placeholder pages that keep the full menu visible. They appear under **More** in the menu. |
+| **Coming soon** | `/players`, `/national-teams` | Placeholder pages that keep the full menu visible. They appear under **More** in the menu. |
 
 The site is designed for phones first and works on all screen sizes.
 
@@ -36,12 +42,12 @@ The site is designed for phones first and works on all screen sizes.
 - The event page shows a public entry list.
 - Admins mark entries as paid and export them as **CSV** (Excel) or **TRF** (Swiss-Manager).
 
-### Not included at launch
+### Not included yet
 
 These items are planned for later phases:
 
-- Photo and video galleries, press releases, press accreditation and a brand hub. The `/media` page shows "Coming soon" until then.
-- Player profiles, a club directory, and records and history.
+- Press accreditation.
+- Player profiles, club team history, and records and history.
 - Tournament archive with photos and reports. Past events and their results stay visible.
 - Live boards.
 - Online payments. Players pay outside the site and an admin marks the entry as paid.
@@ -88,8 +94,10 @@ Log in at **/admin** with your email and password.
 | **Media** | Images only: news hero images and people photos. Always fill in **Alt**, a short description of the image for screen readers. | Images (JPG, PNG, WebP). Don't upload PDFs here. |
 | **Files** | Tournament prospectuses and downloadable forms. You usually upload these directly from the event or form you're editing. | PDF, Word, Excel |
 | **Governance documents** | Official governance records (see 2.8). | PDF |
+| **Videos** | Short video clips for galleries (see 2.14). Put longer videos on YouTube and link them instead. | MP4, WebM, up to 100 MB |
+| **Brand assets** | Logos and media resources for the brand hub (see 2.15). | PNG, JPG, SVG, PDF, ZIP |
 
-Uploading to Media does not put an image anywhere on the site by itself. An image appears only when a news item or person uses it.
+Uploading to Media does not put an image anywhere on the site by itself. An image appears only when a news item, person, club or gallery uses it.
 
 ### 2.4 News and announcements
 
@@ -101,7 +109,7 @@ Uploading to Media does not put an image anywhere on the site by itself. An imag
    - **Body**: the article. Use headings, lists and links from the toolbar.
 3. In the sidebar:
    - **Published At**: the date shown on the article. It defaults to now, and news is sorted by this date.
-   - **Category**: General, Tournaments, National Teams, Education or Governance.
+   - **Category**: General, Tournaments, National Teams, Education, Governance, Stories or Press releases. Stories and press releases also appear in the Media section (see 2.15).
    - **Official announcement**: tick it for official notices. It adds an *Announcement* badge, and the homepage lists the latest three announcements.
 4. Click **Publish**.
 
@@ -273,7 +281,46 @@ Open **Registrations** in the sidebar. Each entry shows the player, event, secti
    - **Order** (sidebar): lower numbers are listed first, e.g. President = 1.
 3. Save.
 
-### 2.13 Pages
+### 2.13 Clubs
+
+1. Go to **Clubs → Create New**.
+2. Fill in:
+   - **Name**, **District** and **City**, and optionally **Logo**, **Year founded** and **Description**.
+   - **Venue & links** (optional): address, a Google Maps link, the club's website and social links. Links must start with `https://`.
+   - **Key contacts**: name and role (e.g. *Secretary*) for each contact, with an optional phone and email. **A contact's phone and email appear on the site only when Show publicly is ticked.** Name and role always appear.
+   - **CFSL registration** (sidebar): Active or Lapsed, and **Last renewed (year)**. An active club shows a "CFSL registered · <year>" badge, and a lapsed club shows "Registration lapsed".
+3. Click **Publish**. Clubs have drafts, so a saved draft isn't shown on the site.
+
+### 2.14 Galleries
+
+1. Go to **Galleries → Create New**.
+2. Fill in **Title**, **Date** (sidebar) and an optional **Description**.
+3. **Event** (sidebar, optional): link the album to a tournament so it also appears on that event page.
+4. **Cover** (optional): if left empty, the first photo is used.
+5. Under **Items**, add any mix of:
+   - **Photo**: choose or upload an image in Media. The **Alt** and **Caption** you set on the image are shown in the full-screen viewer.
+   - **YouTube or Facebook video**: paste the video's own link (e.g. `https://youtu.be/…` or a Facebook `/videos/…` link), not a page or profile link.
+   - **Uploaded video**: an MP4 or WebM clip of up to 100 MB. Longer videos should go on YouTube.
+6. Click **Publish**.
+
+On the album page, photos are shown first and videos second, each in the order you added them.
+
+### 2.15 Stories, press releases and the brand hub
+
+- **Stories** (player features and interviews) and **Press releases** are ordinary news items. Create them in **News** and choose the **Stories** or **Press releases** category. They appear on `/media/stories` or `/media/press`, and also in the main News feed.
+- **Brand hub:** go to **Brand assets → Create New**, upload the file, then set **Title**, **Category** (Logos, Guidelines, Templates, Other), an optional **Description** and **Order** (lower numbers first). PNG, JPG and SVG files get a preview; PDFs and ZIPs show a file icon. Assets go live on `/media/brand` as soon as you save.
+
+### 2.16 Education
+
+Each Education topic is a page in **Pages** with **Section** set to *Education*. It lives at `/education/<slug>`.
+
+- Eight draft topic pages have been created: Chess in Education, School Chess, Learn Chess, Coaching, Arbiters, Women in Chess, Youth Development and Differently Abled Chess. Each has placeholder text and **Coming soon** ticked.
+- To launch a topic: write the body, fill in **Summary** (the text on the topic's card, up to 200 characters), untick **Coming soon**, then click **Publish**.
+- **Order** (sidebar) sets the card position on `/education`. Lower numbers come first.
+- `/education` shows the "Coming soon" notice until at least one topic is published.
+- If someone visits the old `/<slug>` address of a topic page, they're redirected to `/education/<slug>`.
+
+### 2.17 Pages
 
 Use **Pages** for standalone content.
 
@@ -281,27 +328,28 @@ Use **Pages** for standalone content.
 |---|---|
 | `about` | Adds introduction text at the top of **About CFSL**. |
 | `resources` | Adds introduction text at the top of **Resources**. |
-| `players`, `clubs`, `education`, `national-teams`, `media` | Replaces the default "Coming soon" page for that menu item. Keep **Coming soon** ticked to show the notice above your text, or untick it once the section is real. |
-| Anything else | Creates a new page at `/<slug>`. It won't appear in the menu unless you add it (see 2.14). |
+| `education`, `media` | Adds introduction text at the top of **Education** or **Media**. Leave **Section** empty on these pages. |
+| `players`, `national-teams` | Replaces the default "Coming soon" page for that menu item. Keep **Coming soon** ticked to show the notice above your text, or untick it once the section is real. |
+| Anything else | Creates a new page at `/<slug>`. It won't appear in the menu unless you add it (see 2.18). With **Section** set to *Education*, it becomes an Education topic instead (see 2.16). |
 
 Pages have drafts, so click **Publish** to make one live.
 
-### 2.14 Logo and main menu
+### 2.18 Logo and main menu
 
 **Navigation** (under Globals) controls the site logo and the main menu.
 
 **Logo:** upload or choose an image to show in the site header, then click **Save**. A square image works best. Leave it empty to use the built-in CFSL logo.
 
-**Main menu:** **leave it empty** to use the standard launch menu: Home, News, Tournaments, Rankings, Resources, About CFSL.
+**Main menu:** **leave it empty** to use the standard menu: Home, News, Tournaments, Rankings, Clubs, Education, Media, Resources, About CFSL.
 
 If you add items, they **replace** the whole main menu, so include every item you want. Each item has:
 
 - **Label**
 - **Href**: a site path such as `/news`, or a full `https://` address. Rankings and full addresses open in a new tab.
 
-The **More** menu (Players, Clubs, Education, National Teams, Media) and the footer are fixed.
+The **More** menu (Players, National Teams) and the footer are fixed.
 
-### 2.15 Quick reference
+### 2.19 Quick reference
 
 | I want to… | Go to |
 |---|---|
@@ -315,6 +363,11 @@ The **More** menu (Players, Clubs, Education, National Teams, Media) and the foo
 | Publish a circular or policy | Governance documents → Create New |
 | Add a downloadable form | Forms & downloads → Create New |
 | Update the committee | People |
+| Add or update a club | Clubs → Create New → Publish |
+| Publish a photo or video album | Galleries → Create New → Publish |
+| Publish a story or press release | News → choose the Stories or Press releases category → Publish |
+| Add a logo to the brand hub | Brand assets → Create New |
+| Publish an Education topic | Pages → open the topic → untick Coming soon → Publish |
 | Change the site logo | Navigation → Logo |
 | Reset someone's password | Users (admins only) |
 
@@ -325,3 +378,4 @@ The **More** menu (Players, Clubs, Education, National Teams, Media) and the foo
 - Replace the Cloudflare Turnstile **test keys** with real keys. Until then, the spam check accepts everyone.
 - Move Vercel hosting from the Hobby plan to **Pro**, because Hobby's terms don't cover organisational sites.
 - Optional: connect a custom domain, and add an email provider for password resets and confirmation emails.
+- Run `pnpm seed:education` once against the production database to create the eight draft Education topic pages (see 2.16). It skips any page that already exists. The database migrations run automatically on deploy.

@@ -88,9 +88,17 @@ Payload collections (repeating content) and globals (one-off settings). Every la
 | `documents` | Collection (upload → Blob) | title, `category`: constitution \| regulations-policies \| circulars \| annual-reports \| strategic-plans, `documentDate`, description | L7 |
 | `people` | Collection | name, role, `body` (Executive Committee or a named Commission), photo, term start/end, order | L8 |
 | `downloads` | Collection | title, category (club / player / coach-arbiter / other), PDF upload **or** external form URL | L9 |
-| `pages` | Collection | title, slug, body, `comingSoon` flag | L12 and other static pages |
+| `pages` | Collection | title, slug, body, `comingSoon` flag, optional `section` (`education`) with `summary` and `order` for topic pages at `/<section>/<slug>` | L12, Education, other static pages |
+| `clubs` | Collection (drafts) | name, slug, `registration`: active \| lapsed, `lastRenewed`, logo, `district` (25 districts), city, founded, description, address, `mapUrl`, website, `socials[]`, `contacts[]` {name, role, phone, email, `public`} | Club directory |
+| `galleries` | Collection (drafts) | title, slug, date, optional `event`, cover, description, `items` blocks: `photo` (media) \| `videoEmbed` (YouTube/Facebook URL) \| `videoFile` (videos) | Galleries, event pages |
+| `videos` | Upload → Blob | MP4/WebM up to 100 MB, title, poster | Galleries |
+| `brand-assets` | Upload → Blob | PNG/JPG/SVG/PDF/ZIP, title, `category`: logo \| guidelines \| template \| other, description, order | Brand hub |
 | `homepage` | Global | pinned announcements, featured events (the rest is filled automatically from the newest items) | L11 |
-| `navigation` | Global | main menu items | L1 |
+| `navigation` | Global | logo, main menu items | L1 |
+
+`news.category` also includes `stories` and `press-releases`, which the Media hub lists at `/media/stories` and `/media/press`.
+
+**Club contact privacy:** `phone` and `email` on a club contact have field-level read access (staff, or `public: true`), so the REST and GraphQL APIs never return private details. `src/lib/queries/clubs.ts` also strips them before caching.
 
 ### Event registration config (`events.registration`)
 
@@ -190,9 +198,11 @@ Payload access functions enforce these rules. The public entry list is read by a
 
 | Deferred item | Extension point |
 |---|---|
-| Stories, press releases | New `news` categories |
-| Galleries, video library, brand hub | New collections on the same `media` / Blob setup |
-| Club directory, records and history | New collections. Link them to a `players` collection once one exists. |
+| ~~Stories, press releases~~ | Built: `news` categories |
+| ~~Galleries, brand hub~~ | Built: `galleries`, `videos`, `brand-assets` |
+| Video library | Reuse the `videos` collection and `videoEmbed` URLs |
+| ~~Club directory~~ | Built: `clubs`. Team history needs a `players` collection. |
+| Records and history | New collections. Link them to a `players` collection once one exists. |
 | Player profiles | A `players` collection. Registrations can then reference a player instead of copying the details. |
 | Confirmation emails, newsletter | Add Resend (it has an official Payload email adapter) |
 | Player accounts, personalisation | Add Clerk for public users. Payload auth stays for staff. |
