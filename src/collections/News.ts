@@ -11,6 +11,8 @@ export const NEWS_CATEGORIES = [
   { label: 'National Teams', value: 'national-teams' },
   { label: 'Education', value: 'education' },
   { label: 'Governance', value: 'governance' },
+  { label: 'Stories', value: 'stories' },
+  { label: 'Press releases', value: 'press-releases' },
 ] as const
 
 export const News: CollectionConfig = {

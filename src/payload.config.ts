@@ -7,15 +7,19 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
+import { BrandAssets } from './collections/BrandAssets'
+import { Clubs } from './collections/Clubs'
 import { Documents } from './collections/Documents'
 import { Downloads } from './collections/Downloads'
 import { Events } from './collections/Events'
 import { Files } from './collections/Files'
+import { Galleries } from './collections/Galleries'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { Pages } from './collections/Pages'
 import { People } from './collections/People'
 import { Registrations } from './collections/Registrations'
+import { Videos } from './collections/Videos'
 import { Homepage } from './globals/Homepage'
 import { Navigation } from './globals/Navigation'
 
@@ -32,7 +36,22 @@ export default buildConfig({
       titleSuffix: ' — CFSL Admin',
     },
   },
-  collections: [Users, Media, Files, Pages, News, Events, Registrations, Documents, Downloads, People],
+  collections: [
+    Users,
+    Media,
+    Files,
+    Videos,
+    Pages,
+    News,
+    Events,
+    Registrations,
+    Documents,
+    Downloads,
+    People,
+    Clubs,
+    Galleries,
+    BrandAssets,
+  ],
   globals: [Homepage, Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -57,6 +76,8 @@ export default buildConfig({
         media: { disablePayloadAccessControl: true },
         files: { disablePayloadAccessControl: true },
         documents: { disablePayloadAccessControl: true },
+        videos: { disablePayloadAccessControl: true },
+        'brand-assets': { disablePayloadAccessControl: true },
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true,

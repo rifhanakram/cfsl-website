@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     files: File;
+    videos: Video;
     pages: Page;
     news: News;
     events: Event;
@@ -77,6 +78,9 @@ export interface Config {
     documents: Document;
     downloads: Download;
     people: Person;
+    clubs: Club;
+    galleries: Gallery;
+    'brand-assets': BrandAsset;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -87,6 +91,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     files: FilesSelect<false> | FilesSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
@@ -94,6 +99,9 @@ export interface Config {
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
     downloads: DownloadsSelect<false> | DownloadsSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
+    clubs: ClubsSelect<false> | ClubsSelect<true>;
+    galleries: GalleriesSelect<false> | GalleriesSelect<true>;
+    'brand-assets': BrandAssetsSelect<false> | BrandAssetsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -213,7 +221,34 @@ export interface File {
   focalY?: number | null;
 }
 /**
- * Standalone pages such as /players. A page with the slug "about" or "resources" adds an introduction to that section.
+ * Short video clips (MP4 or WebM, up to 100 MB) for galleries. Put longer videos on YouTube.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: number;
+  title: string;
+  /**
+   * Optional preview image.
+   */
+  poster?: (number | null) | Media;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Standalone pages such as /players, or topic pages inside a section such as /education/school-chess. A page with the slug "about", "resources", "education" or "media" adds an introduction to that section.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
@@ -225,6 +260,18 @@ export interface Page {
    * Used in the page URL. Generated from the title if left empty.
    */
   slug: string;
+  /**
+   * Leave empty for a standalone page at /<slug>. Choose a section to list the page there, e.g. /education/<slug>.
+   */
+  section?: 'education' | null;
+  /**
+   * Shown on the section page card.
+   */
+  summary?: string | null;
+  /**
+   * Lower numbers are listed first in the section.
+   */
+  order?: number | null;
   /**
    * Shows a "Coming soon" notice above the body.
    */
@@ -260,7 +307,7 @@ export interface News {
    */
   slug: string;
   publishedAt: string;
-  category: 'general' | 'tournaments' | 'national-teams' | 'education' | 'governance';
+  category: 'general' | 'tournaments' | 'national-teams' | 'education' | 'governance' | 'stories' | 'press-releases';
   /**
    * Marked as an official announcement on the site.
    */
@@ -495,6 +542,155 @@ export interface Person {
   createdAt: string;
 }
 /**
+ * Registered chess clubs listed in the public club directory at /clubs.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clubs".
+ */
+export interface Club {
+  id: number;
+  name: string;
+  /**
+   * Used in the page URL. Generated from the name if left empty.
+   */
+  slug: string;
+  registration: 'active' | 'lapsed';
+  lastRenewed?: number | null;
+  logo?: (number | null) | Media;
+  district:
+    | 'ampara'
+    | 'anuradhapura'
+    | 'badulla'
+    | 'batticaloa'
+    | 'colombo'
+    | 'galle'
+    | 'gampaha'
+    | 'hambantota'
+    | 'jaffna'
+    | 'kalutara'
+    | 'kandy'
+    | 'kegalle'
+    | 'kilinochchi'
+    | 'kurunegala'
+    | 'mannar'
+    | 'matale'
+    | 'matara'
+    | 'monaragala'
+    | 'mullaitivu'
+    | 'nuwara-eliya'
+    | 'polonnaruwa'
+    | 'puttalam'
+    | 'ratnapura'
+    | 'trincomalee'
+    | 'vavuniya';
+  city?: string | null;
+  founded?: number | null;
+  description?: string | null;
+  address?: string | null;
+  mapUrl?: string | null;
+  website?: string | null;
+  socials?:
+    | {
+        platform: 'facebook' | 'instagram' | 'youtube' | 'x' | 'tiktok' | 'other';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Phone and email are only shown on the site when "Show publicly" is ticked.
+   */
+  contacts?:
+    | {
+        name: string;
+        role: string;
+        phone?: string | null;
+        email?: string | null;
+        public?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Photo and video albums shown at /media/galleries.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries".
+ */
+export interface Gallery {
+  id: number;
+  title: string;
+  /**
+   * Used in the page URL. Generated from the title if left empty.
+   */
+  slug: string;
+  date: string;
+  /**
+   * Optional. The album is also shown on this event page.
+   */
+  event?: (number | null) | Event;
+  /**
+   * Leave empty to use the first photo.
+   */
+  cover?: (number | null) | Media;
+  description?: string | null;
+  items: (
+    | {
+        image: number | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'photo';
+      }
+    | {
+        url: string;
+        caption?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'videoEmbed';
+      }
+    | {
+        video: number | Video;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'videoFile';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Logos and media resources offered for download at /media/brand.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-assets".
+ */
+export interface BrandAsset {
+  id: number;
+  title: string;
+  category: 'logo' | 'guidelines' | 'template' | 'other';
+  description?: string | null;
+  /**
+   * Lower numbers are listed first.
+   */
+  order?: number | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -531,6 +727,10 @@ export interface PayloadLockedDocument {
         value: number | File;
       } | null)
     | ({
+        relationTo: 'videos';
+        value: number | Video;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -557,6 +757,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'people';
         value: number | Person;
+      } | null)
+    | ({
+        relationTo: 'clubs';
+        value: number | Club;
+      } | null)
+    | ({
+        relationTo: 'galleries';
+        value: number | Gallery;
+      } | null)
+    | ({
+        relationTo: 'brand-assets';
+        value: number | BrandAsset;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -668,11 +880,35 @@ export interface FilesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  title?: T;
+  poster?: T;
+  prefix?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  section?: T;
+  summary?: T;
+  order?: T;
   comingSoon?: T;
   body?: T;
   updatedAt?: T;
@@ -827,6 +1063,108 @@ export interface PeopleSelect<T extends boolean = true> {
   order?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clubs_select".
+ */
+export interface ClubsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  registration?: T;
+  lastRenewed?: T;
+  logo?: T;
+  district?: T;
+  city?: T;
+  founded?: T;
+  description?: T;
+  address?: T;
+  mapUrl?: T;
+  website?: T;
+  socials?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  contacts?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        phone?: T;
+        email?: T;
+        public?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries_select".
+ */
+export interface GalleriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  date?: T;
+  event?: T;
+  cover?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        photo?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+              blockName?: T;
+            };
+        videoEmbed?:
+          | T
+          | {
+              url?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+        videoFile?:
+          | T
+          | {
+              video?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-assets_select".
+ */
+export interface BrandAssetsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  description?: T;
+  order?: T;
+  prefix?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

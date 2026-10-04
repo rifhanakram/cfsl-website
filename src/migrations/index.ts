@@ -7,6 +7,7 @@ import * as migration_20260924_041935_documents_downloads from './20260924_04193
 import * as migration_20260924_042140_people from './20260924_042140_people';
 import * as migration_20260924_042322_homepage from './20260924_042322_homepage';
 import * as migration_20261004_163817_navigation_logo from './20261004_163817_navigation_logo';
+import * as migration_20261004_170030_galleries_clubs_brand_education from './20261004_170030_galleries_clubs_brand_education';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261004_163817_navigation_logo.up,
     down: migration_20261004_163817_navigation_logo.down,
-    name: '20261004_163817_navigation_logo'
+    name: '20261004_163817_navigation_logo',
+  },
+  {
+    up: migration_20261004_170030_galleries_clubs_brand_education.up,
+    down: migration_20261004_170030_galleries_clubs_brand_education.down,
+    name: '20261004_170030_galleries_clubs_brand_education'
   },
 ];
