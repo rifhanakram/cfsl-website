@@ -17,6 +17,16 @@ export const getNavigation = cached(
   [TAGS.navigation],
 )
 
+export const getLogo = cached(
+  async () => {
+    const payload = await getPayloadClient()
+    const nav = await payload.findGlobal({ slug: 'navigation', depth: 1 })
+    return typeof nav.logo === 'object' && nav.logo?.url ? nav.logo : null
+  },
+  'logo',
+  [TAGS.navigation],
+)
+
 export const getPage = cached(
   async (slug: string) => {
     const payload = await getPayloadClient()

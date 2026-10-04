@@ -8,7 +8,7 @@ export const Navigation: GlobalConfig = {
   slug: 'navigation',
   admin: {
     description:
-      'Main menu. Leave empty to use the default launch menu (Home, News, Tournaments, Rankings, Resources, About CFSL).',
+      'Site logo and main menu. Leave the menu empty to use the default launch menu (Home, News, Tournaments, Rankings, Resources, About CFSL).',
   },
   access: {
     read: () => true,
@@ -16,6 +16,14 @@ export const Navigation: GlobalConfig = {
   },
   hooks: revalidateGlobal(TAGS.navigation),
   fields: [
+    {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Shown in the site header. A square image works best. Leave empty to use the built-in CFSL logo.',
+      },
+    },
     {
       name: 'items',
       type: 'array',

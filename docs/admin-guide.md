@@ -286,9 +286,13 @@ Use **Pages** for standalone content.
 
 Pages have drafts, so click **Publish** to make one live.
 
-### 2.14 Main menu
+### 2.14 Logo and main menu
 
-**Navigation** (under Globals) controls the main menu. **Leave it empty** to use the standard launch menu: Home, News, Tournaments, Rankings, Resources, About CFSL.
+**Navigation** (under Globals) controls the site logo and the main menu.
+
+**Logo:** upload or choose an image to show in the site header, then click **Save**. A square image works best. Leave it empty to use the built-in CFSL logo.
+
+**Main menu:** **leave it empty** to use the standard launch menu: Home, News, Tournaments, Rankings, Resources, About CFSL.
 
 If you add items, they **replace** the whole main menu, so include every item you want. Each item has:
 
@@ -311,6 +315,7 @@ The **More** menu (Players, Clubs, Education, National Teams, Media) and the foo
 | Publish a circular or policy | Governance documents → Create New |
 | Add a downloadable form | Forms & downloads → Create New |
 | Update the committee | People |
+| Change the site logo | Navigation → Logo |
 | Reset someone's password | Users (admins only) |
 
 ---

@@ -889,13 +889,17 @@ export interface Homepage {
   createdAt?: string | null;
 }
 /**
- * Main menu. Leave empty to use the default launch menu (Home, News, Tournaments, Rankings, Resources, About CFSL).
+ * Site logo and main menu. Leave the menu empty to use the default launch menu (Home, News, Tournaments, Rankings, Resources, About CFSL).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "navigation".
  */
 export interface Navigation {
   id: number;
+  /**
+   * Shown in the site header. A square image works best. Leave empty to use the built-in CFSL logo.
+   */
+  logo?: (number | null) | Media;
   items?:
     | {
         label: string;
@@ -926,6 +930,7 @@ export interface HomepageSelect<T extends boolean = true> {
  * via the `definition` "navigation_select".
  */
 export interface NavigationSelect<T extends boolean = true> {
+  logo?: T;
   items?:
     | T
     | {
