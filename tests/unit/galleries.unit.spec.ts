@@ -8,6 +8,7 @@ describe('toVideoEmbed', () => {
   it('accepts youtu.be short links', () => {
     expect(toVideoEmbed('https://youtu.be/dQw4w9WgXcQ')).toEqual(youtube('dQw4w9WgXcQ'))
     expect(toVideoEmbed('https://youtu.be/dQw4w9WgXcQ?si=abc&t=42')).toEqual(youtube('dQw4w9WgXcQ'))
+    expect(toVideoEmbed('https://youtu.be/dQw4w9WgXcQ/')).toEqual(youtube('dQw4w9WgXcQ'))
   })
 
   it('accepts watch?v= links on any YouTube host', () => {
@@ -37,6 +38,12 @@ describe('toVideoEmbed', () => {
     })
     expect(toVideoEmbed('https://fb.watch/abc123/')?.provider).toBe('facebook')
     expect(toVideoEmbed('https://m.facebook.com/watch/?v=1234567890')?.provider).toBe('facebook')
+    expect(toVideoEmbed('https://www.facebook.com/reel/1234567890')?.provider).toBe('facebook')
+  })
+
+  it('rejects Facebook links that are not videos', () => {
+    expect(toVideoEmbed('https://www.facebook.com/')).toBeNull()
+    expect(toVideoEmbed('https://www.facebook.com/chessSL')).toBeNull()
   })
 
   it('rejects http links', () => {
