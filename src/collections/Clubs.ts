@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, FieldAccess } from 'payload'
 
 import { isEditorOrAdmin, publishedOrStaff } from '@/access/roles'
 import { slugField } from '@/fields/slug'
@@ -14,6 +14,10 @@ const httpsUrl = (value: string | null | undefined) => {
     return 'Enter a valid URL'
   }
 }
+
+// Keeps private contact details out of the public REST and GraphQL APIs too.
+const publicContactField: FieldAccess = ({ req, siblingData }) =>
+  Boolean(req.user) || siblingData?.public === true
 
 export const Clubs: CollectionConfig = {
   slug: 'clubs',
@@ -102,8 +106,8 @@ export const Clubs: CollectionConfig = {
         {
           type: 'row',
           fields: [
-            { name: 'phone', type: 'text' },
-            { name: 'email', type: 'email' },
+            { name: 'phone', type: 'text', access: { read: publicContactField } },
+            { name: 'email', type: 'email', access: { read: publicContactField } },
           ],
         },
         { name: 'public', label: 'Show publicly', type: 'checkbox', defaultValue: false },
