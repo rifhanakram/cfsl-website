@@ -5,12 +5,14 @@ import { notFound } from 'next/navigation'
 
 import { RegistrationSection } from '@/components/events/registration-section'
 import { ResultsEmbed } from '@/components/events/results-embed'
+import { GalleryCard } from '@/components/galleries/gallery-card'
 import { RichText } from '@/components/site/rich-text'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { eventTypeLabel } from '@/lib/events'
 import { formatDateRange } from '@/lib/format'
 import { getEvent } from '@/lib/queries/events'
+import { getEventGalleries } from '@/lib/queries/galleries'
 import { registrationStatus } from '@/lib/registration/rules'
 
 // Registration status and the entry list change without a content edit.
@@ -29,6 +31,7 @@ export default async function EventPage({ params }: Props) {
   if (!event) notFound()
 
   const status = registrationStatus(event.registration)
+  const galleries = await getEventGalleries(event.id)
   const prospectus = typeof event.prospectus === 'object' && event.prospectus?.url ? event.prospectus : null
 
   return (
@@ -90,6 +93,20 @@ export default async function EventPage({ params }: Props) {
         )}
         {status !== 'disabled' && <RegistrationSection event={event} status={status} />}
         {event.chessResultsUrl && <ResultsEmbed url={event.chessResultsUrl} title={event.title} />}
+        {galleries.length > 0 && (
+          <section id="galleries" className="scroll-mt-20 space-y-3">
+            <h2 className="text-xl font-semibold">Photos & videos</h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {galleries.map((gallery) => (
+                <GalleryCard
+                  key={gallery.id}
+                  gallery={gallery}
+                  sizes="(min-width: 1024px) 285px, (min-width: 640px) 50vw, 100vw"
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </article>
   )
