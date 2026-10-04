@@ -20,16 +20,16 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
         <Logo />
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Main">
           {primary.map((item) => (
             <NavLink
               key={item.href}
               item={item}
-              className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+              className="rounded-md px-2.5 py-2 text-sm font-medium hover:bg-muted"
             />
           ))}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted">
+            <DropdownMenuTrigger className="flex items-center gap-1 rounded-md px-2.5 py-2 text-sm font-medium hover:bg-muted">
               More <ChevronDownIcon className="size-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

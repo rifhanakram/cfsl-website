@@ -22,7 +22,7 @@ export function MobileNav({ primary, secondary }: { primary: NavItem[]; secondar
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
+        <Button variant="ghost" size="icon" className="xl:hidden" aria-label="Open menu">
           <MenuIcon />
         </Button>
       </SheetTrigger>
